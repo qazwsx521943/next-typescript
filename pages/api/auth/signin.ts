@@ -7,6 +7,7 @@ import * as jose from "jose";
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log("sign in request");
     const errors: string[] = [];
     if (req.method === "POST") {
         const { email, password } = req.body;
@@ -53,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .setProtectedHeader({ alg })
             .setExpirationTime("24h")
             .sign(secret);
-        res.status(200).json({ token: token });
+        return res.status(200).json({ token: token });
     }
 
     res.status(404).json({ errorMsg: "unknown endpoint" });
